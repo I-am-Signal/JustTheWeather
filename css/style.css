@@ -1,0 +1,65 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background:
+        /* top, transparent black, faked with gradient */ 
+        linear-gradient(
+          rgba(0, 0, 0, 0.7), 
+          rgba(0, 0, 0, 0.7)
+        )
+}
+
+nav {
+    background-color: #333;
+    padding: 10px;
+    color: white;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.forecast-container,
+.weather-container,
+.location-input-container,
+.air-quality-container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    background-color: #808080;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.forecast-container p,
+.weather-container p,
+.location-input-container p,
+.air-quality-container p {
+    margin: 10px 0;
+}
+
+.forecast-container p strong,
+.weather-container p strong,
+.location-input-container p strong,
+.air-quality-container p strong {
+    color: #1d04a8;
+}
+
+.forecast-container p,
+.weather-container p,
+.location-input-container p,
+.air-quality-container p {
+    font-size: 18px;
+}
