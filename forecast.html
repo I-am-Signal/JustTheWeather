@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>JustTheWeather - 5-Day Forecast</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="forecast.html">5-Day Forecast</a>
+        <a href="map.html">Weather Map</a>
+        <a href="air.html">Air Quality</a>
+    </nav>
+    <h1>5-Day Forecast</h1>
+    <div id="forecast" class="forecast-container">
+        <!-- Forecast data will be displayed here -->
+    </div>
+    <script type="module" src="js/forecast-script.js"></script>
+    <script>
+        fetchForecast();
+    </script>
+</body>
+</html>
