@@ -32,7 +32,8 @@ h1 {
 .forecast-container,
 .weather-container,
 .location-input-container,
-.air-quality-container {
+.air-quality-container,
+.map-container{
     width: 80%;
     margin: 0 auto;
     text-align: center;
@@ -46,20 +47,23 @@ h1 {
 .forecast-container p,
 .weather-container p,
 .location-input-container p,
-.air-quality-container p {
+.air-quality-container p,
+.map-container p {
     margin: 10px 0;
 }
 
 .forecast-container p strong,
 .weather-container p strong,
 .location-input-container p strong,
-.air-quality-container p strong {
+.air-quality-container p strong,
+.map-container p strong {
     color: #1d04a8;
 }
 
 .forecast-container p,
 .weather-container p,
 .location-input-container p,
-.air-quality-container p {
+.air-quality-container p,
+.map-container p {
     font-size: 18px;
 }
