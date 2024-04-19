@@ -1,5 +1,5 @@
-import { APIKey } from './config.js';
-import { getCurrentLocation } from './script.js';
+import { OWAPIKey } from './config.js';
+import { getCurrentLocation } from './location-script.js';
 
 // Define thresholds for each pollutant
 const thresholds = {
@@ -25,9 +25,9 @@ function getAirQualityLevel(value, pollutant) {
     return labels[labels.length - 1]; // Default to highest label if value exceeds all thresholds
 }
 
-function fetchAirQuality() {
+export function fetchAirQuality() {
     getCurrentLocation().then(coords => {
-        const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${coords['lat']}&lon=${coords['lon']}&appid=${APIKey}`;
+        const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${coords['lat']}&lon=${coords['lon']}&appid=${OWAPIKey}`;
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -39,6 +39,8 @@ function fetchAirQuality() {
                 // update Air Quality display
                 const airQualityDiv = document.getElementById('air-quality');
                 if (data && data.list && data.list.length > 0) {
+
+                    console.log(data);
                     airQualityDiv.innerHTML = `
                         <h2>Air Quality Index (AQI): ${data.list[0].main.aqi}</h2>
                         <p><strong>CO:</strong> ${data.list[0].components.co} µg/m³ (${getAirQualityLevel(data.list[0].components.co, 'co')})</p>
@@ -59,5 +61,3 @@ function fetchAirQuality() {
             });
     });
 }
-
-fetchAirQuality();

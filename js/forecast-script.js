@@ -1,9 +1,9 @@
-import { APIKey } from './config.js';
-import { getCurrentLocation } from './script.js';
+import { OWAPIKey } from './config.js';
+import { getCurrentLocation } from './location-script.js';
 
-function fetchForecast() {
+export function fetchForecast() {
     getCurrentLocation().then(coords => {
-        const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords['lat']}&lon=${coords['lon']}&appid=${APIKey}&units=imperial`;
+        const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords['lat']}&lon=${coords['lon']}&appid=${OWAPIKey}&units=imperial`;
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -15,6 +15,13 @@ function fetchForecast() {
                 // Update 5-Day Forecast display
                 const forecastDiv = document.getElementById('forecast');
                 forecastDiv.innerHTML = ''; // Clear previous content
+
+                if (data && data.city) {
+                    const locationName = `${data.city.name}, ${data.city.country}`;
+                    const locationHeader = document.createElement('h2');
+                    locationHeader.textContent = locationName;
+                    forecastDiv.appendChild(locationHeader);
+                }
 
                 if (data && data.list && data.list.length > 0) {
                     let currentDate = null;
@@ -31,7 +38,7 @@ function fetchForecast() {
                         if (!currentDate || dateWithoutTime.getTime() !== currentDate.getTime()) {
                             currentDate = dateWithoutTime;
                             // Create header for the new day
-                            const header = document.createElement('h2');
+                            const header = document.createElement('h3');
                             header.textContent = currentDate.toDateString();
                             forecastDiv.appendChild(header);
 
@@ -60,5 +67,3 @@ function fetchForecast() {
             });
     });
 }
-
-fetchForecast();
