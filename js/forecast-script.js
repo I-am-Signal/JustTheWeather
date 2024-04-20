@@ -1,5 +1,5 @@
 import { OWAPIKey } from './config.js';
-import { getCurrentLocation } from './location-script.js';
+import { getCurrentLocation, pascalizeAndStringify } from './location-script.js';
 
 export function fetchForecast() {
     getCurrentLocation().then(coords => {
@@ -38,8 +38,9 @@ export function fetchForecast() {
                         if (!currentDate || dateWithoutTime.getTime() !== currentDate.getTime()) {
                             currentDate = dateWithoutTime;
                             // Create header for the new day
-                            const header = document.createElement('h3');
-                            header.textContent = currentDate.toDateString();
+                            const header = document.createElement('h4');
+                            let temp = currentDate.toDateString().split(" ");
+                            header.textContent = temp[0] + ", " + temp[1] + " " + temp[2] + ", " + temp[3];
                             forecastDiv.appendChild(header);
 
                             // Create div for the day's forecasts
@@ -53,8 +54,9 @@ export function fetchForecast() {
                         forecastCard.innerHTML = `
                             <p><strong>Time:</strong> ${dateTime.toLocaleTimeString()}</p>
                             <p><strong>Temperature:</strong> ${forecast.main.temp} °F</p>
-                            <p><strong>Weather:</strong> ${forecast.weather[0].description}</p>
+                            <p><strong>Weather:</strong> ${pascalizeAndStringify(forecast.weather[0].description)}</p>
                         `;
+                        //const break = document.createElement('')
                         currentDayForecastDiv.appendChild(forecastCard);
                     }
                 } else {

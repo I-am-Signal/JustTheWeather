@@ -23,16 +23,16 @@ export function getCurrentLocation() {
                     resolve(location);
                 }, (error) => {
                     console.error('Geolocation error:', error);
-                    defaultLocation('Error getting location. Using default location.');
+                    setDefaultLocation('Error getting location. Using default location.');
                 });
             } else {
-                defaultLocation('Geolocation is not supported by this browser.');
+                setDefaultLocation('Geolocation is not supported by this browser.');
             }
         }
     });
 }
 
-function defaultLocation(errorMessage) {
+function setDefaultLocation(errorMessage) {
     alert(errorMessage);
     const defaultLocation = {
         "lat": 34.038287,
@@ -80,4 +80,19 @@ export async function fetchDifferentLocation(location) {
         console.error('Error fetching coordinates:', error);
         return null; // Return null in case of error
     }
+}
+
+/**
+ * Takes in a string with spaces and returns a string with the first letter of each word capitalized.
+ * @param {*} array 
+ * @returns 
+ */
+export function pascalizeAndStringify(array){
+    array = array.split(" ");
+    let formattedStr = "";
+    for (let i = 0; i < array.length; i++){
+        formattedStr += array[i].charAt(0).toUpperCase() + array[i].slice(1);
+        if (i < array.length - 1) formattedStr += " ";
+    }
+    return formattedStr;
 }

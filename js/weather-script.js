@@ -1,5 +1,5 @@
 import { OWAPIKey } from './config.js';
-import { fetchDifferentLocation, getCurrentLocation } from './location-script.js';
+import { fetchDifferentLocation, getCurrentLocation, pascalizeAndStringify } from './location-script.js';
 
 export function fetchCurrentWeather() {
     getCurrentLocation().then(coords => {
@@ -28,13 +28,8 @@ function updateCurrentWeatherDisplay(data) {
     const weatherDiv = document.getElementById('weather');
     if (data && data.weather && data.weather.length > 0) {
 
-        // Weather conditions name formatting
-        let weather = data.weather[0].description.split(" ");
-        let formattedWeather = "";
-        for (let i = 0; i < weather.length; i++){
-            formattedWeather += weather[i].charAt(0).toUpperCase() + weather[i].slice(1);
-            if (i < weather.length - 1) formattedWeather += " ";
-        }
+        let formattedWeather = pascalizeAndStringify(data.weather[0].description);
+
         console.log(data);
         weatherDiv.innerHTML = `
             <img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="Weather Icon">
