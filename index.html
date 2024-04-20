@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <title >JustTheWeather - Current Weather</title>
+    <title>JustTheWeather - Current Weather</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: Gainsboro;">
@@ -31,33 +31,12 @@
                 </ul>
             </div>
         </div>
-    </nav>        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="forecast.html">5-Day Forecast</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="map.html">Weather Map</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="air.html">Air Quality</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
     </nav>
     <div class="container">
         <h1 style="color: antiquewhite;">Current Weather</h1>
         <div id="weather" class="weather-container">
             <p>Loading...</p>
-            <!-- Weather dat will be displayed here -->
+            <!-- Weather data will be displayed here -->
         </div>
         <form id="location-form" class="location-input-container">
             <div class="mb-3">
@@ -76,7 +55,7 @@
 
         document.getElementById('location-input').addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
-                event.preventDefault(); // Prevent the default form submission behavior
+                event.preventDefault();
                 displayNewLocation();
             }
         });
@@ -87,7 +66,7 @@
         });
 
         function displayNewLocation() {
-            const location = document.getElementById('location-input').value.trim(); // Trim whitespace
+            const location = document.getElementById('location-input').value.trim();
             if (location) {
                 console.log("Debug: " + location + " is being searched for!");
                 fetchWeatherByLocation(location);
