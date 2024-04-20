@@ -3,17 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <title>JustTheWeather - Air Quality</title>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="forecast.html">5-Day Forecast</a>
-        <a href="map.html">Weather Map</a>
-        <a href="air.html">Air Quality</a>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: Gainsboro;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">JustTheWeather</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="forecast.html">5-Day Forecast</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="map.html">Weather Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="air.html">Air Quality</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
-    <h1>Air Quality</h1>
+    <h1 style="color: antiquewhite;">Air Quality</h1>
     <div id="air-quality" class="air-quality-container">
         <p>Loading...</p>
     </div>
