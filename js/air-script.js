@@ -3,13 +3,13 @@ import { getCurrentLocation } from './location-script.js';
 
 // Define thresholds for each pollutant
 const thresholds = {
-    co: [0, 4500, 9500, 12500, 15500], // micrograms
-    no: [0, 65, 130, 180, 230], // 
-    no2: [0, 53, 100, 360, 650],
-    o3: [0, 54, 70, 85, 105],
-    so2: [0, 35, 75, 185, 305],
-    pm10: [0, 20, 35, 50, 75],
-    pm25: [0, 10, 20, 25, 50]
+    co: [0, 4400, 9400, 12400, 15400], // micrograms
+    // no: [0, 65, 130, 180, 230],
+    no2: [0, 40, 70, 150, 200], //
+    o3: [0, 60, 100, 140, 180], //
+    so2: [0, 20, 80, 250, 350], //
+    pm10: [0, 20, 50, 100, 200], //
+    pm25: [0, 10, 25, 50, 75] //
 };
 
 // Define labels for air quality levels
@@ -44,7 +44,6 @@ export function fetchAirQuality() {
                     airQualityDiv.innerHTML = `
                         <h2>Air Quality Index (AQI): ${data.list[0].main.aqi}</h2>
                         <p><strong>CO:</strong> ${data.list[0].components.co} µg/m³ (${getAirQualityLevel(data.list[0].components.co, 'co')})</p>
-                        <p><strong>NO:</strong> ${data.list[0].components.no} µg/m³ (${getAirQualityLevel(data.list[0].components.no, 'no')})</p>
                         <p><strong>NO<sub>2</sub>:</strong> ${data.list[0].components.no2} µg/m³ (${getAirQualityLevel(data.list[0].components.no2, 'no2')})</p>
                         <p><strong>O<sub>3</sub>:</strong> ${data.list[0].components.o3} µg/m³ (${getAirQualityLevel(data.list[0].components.o3, 'o3')})</p>
                         <p><strong>SO<sub>2</sub>:</strong> ${data.list[0].components.so2} µg/m³ (${getAirQualityLevel(data.list[0].components.so2, 'so2')})</p>
