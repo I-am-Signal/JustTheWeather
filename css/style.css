@@ -29,15 +29,30 @@ h1 {
     margin-top: 20px;
 }
 
+button{
+    border-radius: 5px;
+}
+
 .forecast-container,
 .weather-container,
 .location-input-container,
-.air-quality-container,
-.map-container{
+.air-quality-container{
     width: 80%;
     margin: 0 auto;
     text-align: center;
     padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    background-color: #777;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.map-container {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    padding-top: 10px;
     border: 1px solid #000000;
     border-radius: 10px;
     background-color: #777;
@@ -50,6 +65,7 @@ h1 {
 .air-quality-container p,
 .map-container p {
     margin: 10px 0;
+    font-size: 18px;
 }
 
 .weather-container p strong,
@@ -58,14 +74,6 @@ h1 {
 .map-container p strong,
 .forecast-container p strong {
     color: #123456;
-}
-
-.forecast-container p,
-.weather-container p,
-.location-input-container p,
-.air-quality-container p,
-.map-container p {
-    font-size: 18px;
 }
 
 .forecast-card {
