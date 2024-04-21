@@ -1,5 +1,5 @@
 import { OWAPIKey } from './config.js';
-import { fetchDifferentLocation, getCurrentLocation, pascalizeAndStringify } from './location-script.js';
+import { fetchDifferentLocation, getCurrentLocation, pascalizeAndStringify, clearSavedLocation } from './location-script.js';
 
 export function fetchCurrentWeather() {
     getCurrentLocation().then(coords => {
@@ -13,7 +13,6 @@ export function fetchCurrentWeather() {
             })
             .then(data => {
                 updateCurrentWeatherDisplay(data);
-                // Store the coordinates in sessionStorage
                 sessionStorage.setItem('location', JSON.stringify(coords));
             })
             .catch(error => {
@@ -28,25 +27,29 @@ function updateCurrentWeatherDisplay(data) {
     const weatherDiv = document.getElementById('weather');
     if (data && data.weather && data.weather.length > 0) {
 
-        let formattedWeather = pascalizeAndStringify(data.weather[0].description);
-
-        console.log(data);
         weatherDiv.innerHTML = `
             <img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="Weather Icon">
             <p><strong>Location:</strong> ${data.name}, ${data.sys.country}</p>
             <p><strong>Temperature:</strong> ${data.main.temp} °F</p>
             <p><strong>Feels Like:</strong> ${data.main.feels_like} °F</p>
-            <p><strong>Weather:</strong> ${formattedWeather}</p>
+            <p><strong>Weather:</strong> ${pascalizeAndStringify(data.weather[0].description)}</p>
             <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
             <p><strong>Wind Speed:</strong> ${data.wind.speed} mph</p>
             <button type="button" id="current-location">Refresh Information</button>
+            <button type="button" id="geo-locate">Geolocate Location</button>
             `;
 
-        // Add event listener for the refresh button
         document.getElementById('current-location').addEventListener('click', function (event) {
             event.preventDefault();
             console.log("Debug: Refresh Information button clicked!");
-            fetchWeatherByLocation(sessionStorage.getItem('location')); // Call fetchCurrentWeather when the button is clicked
+            fetchWeatherByLocation(sessionStorage.getItem('location'));
+        });
+
+        document.getElementById('geo-locate').addEventListener('click', function (event) {
+            event.preventDefault();
+            console.log("Debug: Geolocate Location button clicked!");
+            clearSavedLocation();
+            fetchCurrentWeather();
         });
     } else {
         weatherDiv.innerHTML = "<p>Weather data not available.</p>";
@@ -87,16 +90,14 @@ function processWeatherData(coords) {
     if (!coords) {
         alert('Failed to fetch weather data due to invalid location');
     } else {
-        console.log('Debug: coordinates are ', coords); // Log coordinates for debugging
-        const { lat, lon } = coords; // Extract latitude and longitude from the response
+        console.log('Debug: coordinates are ', coords);
+        const { lat, lon } = coords;
 
-        // Check if lat and lon are defined
         if (lat === undefined || lon === undefined) {
-            alert('Failed to fetch weather data due to missing coordinates');
+            alert('Failed to fetch weather data due to failed coordinate retrieval.');
             return;
         }
 
-        // Use the obtained coordinates to fetch weather data
         const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OWAPIKey}&units=imperial`;
 
         fetch(weatherUrl)

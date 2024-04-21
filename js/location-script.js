@@ -1,5 +1,11 @@
 import { OCAPIKey, OWAPIKey } from './config.js';
 
+/**
+ * Returns the current location coordinates.
+ * If there is currently a location saved, it returns its coordinates.
+ * If there is not a location saved, it attempts to get the user's web browser's navigator geolocation as coordinates.
+ * @returns array containing 'lat' and 'lon' coordinates
+ */
 export function getCurrentLocation() {
     return new Promise((resolve, reject) => {
         // Check if location is already stored
@@ -32,6 +38,11 @@ export function getCurrentLocation() {
     });
 }
 
+
+/**
+ * Alerts the user with the error message and sets the default location to Kennesaw State University.
+ * @param {*} errorMessage 
+ */
 function setDefaultLocation(errorMessage) {
     alert(errorMessage);
     const defaultLocation = {
@@ -42,11 +53,22 @@ function setDefaultLocation(errorMessage) {
     resolve(defaultLocation);
 }
 
-export function clearLocationCache() {
+
+/**
+ * Clears the current saved location
+ */
+export function clearSavedLocation() {
     sessionStorage.removeItem('location');
 }
 
-// Takes in unformatted location string, returns coordinates
+
+/**
+ * Takes in unformatted location string.
+ * Returns locations coordinates if valid.
+ * Returns null if location input is invalid.
+ * @param {*} location 
+ * @returns 
+ */
 export async function fetchDifferentLocation(location) {
     // Remove spaces from the location string
     const formattedLocation = location.replace(/\s+/g, '');
@@ -82,17 +104,18 @@ export async function fetchDifferentLocation(location) {
     }
 }
 
+
 /**
  * Takes in a string with spaces and returns a string with the first letter of each word capitalized.
- * @param {*} array 
- * @returns 
+ * @param {*} titlestring 
+ * @returns string
  */
-export function pascalizeAndStringify(array){
-    array = array.split(" ");
+export function pascalizeAndStringify(titlestring){
+    titlestring = titlestring.split(" ");
     let formattedStr = "";
-    for (let i = 0; i < array.length; i++){
-        formattedStr += array[i].charAt(0).toUpperCase() + array[i].slice(1);
-        if (i < array.length - 1) formattedStr += " ";
+    for (let i = 0; i < titlestring.length; i++){
+        formattedStr += titlestring[i].charAt(0).toUpperCase() + titlestring[i].slice(1);
+        if (i < titlestring.length - 1) formattedStr += " ";
     }
     return formattedStr;
 }
