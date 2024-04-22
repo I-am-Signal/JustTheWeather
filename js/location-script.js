@@ -12,29 +12,27 @@ export function getCurrentLocation() {
         const savedLocation = sessionStorage.getItem('location');
         console.log("Debug: current saved location: ", JSON.parse(savedLocation));
 
-        if (savedLocation) {
-            sessionStorage.setItem('location', savedLocation);
+        if (savedLocation) { // there is a location saved
             resolve(JSON.parse(savedLocation));
         }
-        else {
 
-            if (navigator.geolocation) {
-                console.log('Debug: saving geolocation from browser.');
-                navigator.geolocation.getCurrentPosition((position) => {
-                    const location = {
-                        "lat": position.coords.latitude,
-                        "lon": position.coords.longitude
-                    };
-                    sessionStorage.setItem('location', JSON.stringify(location));
-                    resolve(location);
-                }, (error) => {
-                    console.error('Geolocation error:', error);
-                    setDefaultLocation('Error getting location. Using default location.');
-                });
-            } else {
-                setDefaultLocation('Geolocation is not supported by this browser.');
-            }
-        }
+        if (!navigator.geolocation) { // browser doesn't support geolocation
+            console.error('Geolocation is not supported by this browser.');
+            resolve(setDefaultLocation('Geolocation is not supported by this browser. Using default location.'));
+        } 
+        
+        console.log('Debug: attempting to save geolocation from browser.');
+        navigator.geolocation.getCurrentPosition((position) => {
+            const location = {
+                "lat": position.coords.latitude,
+                "lon": position.coords.longitude
+            };
+            sessionStorage.setItem('location', JSON.stringify(location));
+            resolve(location);
+        }, (error) => {
+            console.error('Geolocation error:', error);
+            resolve(setDefaultLocation('Error getting location. Using default location.'));
+        });
     });
 }
 
@@ -43,14 +41,14 @@ export function getCurrentLocation() {
  * Alerts the user with the error message and sets the default location to Kennesaw State University.
  * @param {*} errorMessage 
  */
-function setDefaultLocation(errorMessage) {
+function setDefaultLocation(errorMessage, resolve = null) {
     alert(errorMessage);
     const defaultLocation = {
         "lat": 34.038287,
         "lon": -84.581747
     };
     sessionStorage.setItem('location', JSON.stringify(defaultLocation));
-    resolve(defaultLocation);
+    return defaultLocation;
 }
 
 
@@ -110,12 +108,61 @@ export async function fetchDifferentLocation(location) {
  * @param {*} titlestring 
  * @returns string
  */
-export function pascalizeAndStringify(titlestring){
+export function pascalizeAndStringify(titlestring) {
     titlestring = titlestring.split(" ");
     let formattedStr = "";
-    for (let i = 0; i < titlestring.length; i++){
+    for (let i = 0; i < titlestring.length; i++) {
         formattedStr += titlestring[i].charAt(0).toUpperCase() + titlestring[i].slice(1);
         if (i < titlestring.length - 1) formattedStr += " ";
     }
     return formattedStr;
+}
+
+/**
+ * Takes in the weather condition ID, Date object dateTime, and city and country location.
+ * Returns 1 and sends an alert if the weather conditions are urgent.
+ * Returns 0 if the weather conditions are not urgent.
+ * @param {*} weatherConditionID 
+ * @param {*} dateTime
+ * @param {*} cityAndCountry 
+ */
+export function emergencyAlert(weatherConditionID, dateTime, cityAndCountry = null) {
+    let alertString = "";
+    let alertNecessary = false;
+
+    // Thunderstorms
+    if (weatherConditionID >= 200 && weatherConditionID <= 232) {
+        alertString = "There is a thunderstorm at ";
+        alertNecessary = true;
+    }
+
+    // Heavy Rains
+    if (weatherConditionID >= 502 && weatherConditionID <= 531) {
+        alertString = "There is heavier rain at ";
+        alertNecessary = true;
+    }
+
+    // Snow
+    if (weatherConditionID >= 601 && weatherConditionID <= 622) {
+        alertString = "There is snow at "
+    }
+
+    // Atmosphere
+    if (weatherConditionID >= 701 && weatherConditionID <= 781) {
+        alertString = "There is lower visibility because of weather conditions at "
+    }
+
+    // If an alert is necessary
+    if (alertNecessary) {
+        if (cityAndCountry != null) {
+            alert(alertString + dateTime.toLocaleTimeString() + " on " + dateTime.toDateString() + " in " + cityAndCountry + ".");
+        }
+        else {
+            alert(alertString + dateTime.toLocaleTimeString() + " on " + dateTime.toDateString() + ".")
+        }
+        return 1;
+    }
+
+    // If an alert is no necessary
+    return 0;
 }

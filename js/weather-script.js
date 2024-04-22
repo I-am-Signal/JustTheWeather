@@ -1,6 +1,9 @@
 import { OWAPIKey } from './config.js';
-import { fetchDifferentLocation, getCurrentLocation, pascalizeAndStringify, clearSavedLocation } from './location-script.js';
+import { fetchDifferentLocation, getCurrentLocation, pascalizeAndStringify, clearSavedLocation, emergencyAlert } from './location-script.js';
 
+/**
+ * Fetches the current weather and displays it using OpenWeather's Current Weather API
+ */
 export function fetchCurrentWeather() {
     getCurrentLocation().then(coords => {
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${coords['lat']}&lon=${coords['lon']}&appid=${OWAPIKey}&units=imperial`;
@@ -37,7 +40,7 @@ function updateCurrentWeatherDisplay(data) {
             <p><strong>Wind Speed:</strong> ${data.wind.speed} mph</p>
             <button type="button" id="current-location">Refresh Information</button>
             <button type="button" id="geo-locate">Geolocate Location</button>
-            `;
+        `;
 
         document.getElementById('current-location').addEventListener('click', function (event) {
             event.preventDefault();
@@ -51,11 +54,20 @@ function updateCurrentWeatherDisplay(data) {
             clearSavedLocation();
             fetchCurrentWeather();
         });
+
+        const dateTime = new Date(data.dt * 1000);
+        emergencyAlert(605, dateTime, (data.name + ", " + data.sys.country))
+
     } else {
         weatherDiv.innerHTML = "<p>Weather data not available.</p>";
     }
 }
 
+
+/**
+ * Takes in a json format location coordinate string and displays the weather for that location
+ * @param {*} location 
+ */
 export function fetchWeatherByLocation(location) {
     let coords;
     if (location) {

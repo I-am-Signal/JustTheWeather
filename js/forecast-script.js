@@ -1,6 +1,9 @@
 import { OWAPIKey } from './config.js';
-import { getCurrentLocation, pascalizeAndStringify } from './location-script.js';
+import { getCurrentLocation, pascalizeAndStringify, emergencyAlert } from './location-script.js';
 
+/**
+ * Fetches the forecast from OpenWeather
+ */
 export function fetchForecast() {
     getCurrentLocation().then(coords => {
         const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords['lat']}&lon=${coords['lon']}&appid=${OWAPIKey}&units=imperial`;
@@ -15,9 +18,10 @@ export function fetchForecast() {
                 // Update 5-Day Forecast display
                 const forecastDiv = document.getElementById('forecast');
                 forecastDiv.innerHTML = ''; // Clear previous content
+                let locationName = null;
 
                 if (data && data.city) {
-                    const locationName = `${data.city.name}, ${data.city.country}`;
+                    locationName = `${data.city.name}, ${data.city.country}`;
                     const locationHeader = document.createElement('h2');
                     locationHeader.textContent = locationName;
                     forecastDiv.appendChild(locationHeader);
@@ -26,6 +30,7 @@ export function fetchForecast() {
                 if (data && data.list && data.list.length > 0) {
                     let currentDate = null;
                     let currentDayForecastDiv = null;
+                    let alertCounter = 0;
 
                     for (let i = 0; i < data.list.length; i++) {
                         const forecast = data.list[i];
@@ -40,7 +45,8 @@ export function fetchForecast() {
                             // Create header for the new day
                             const header = document.createElement('h4');
                             let temp = currentDate.toDateString().split(" ");
-                            header.textContent = temp[0] + ", " + temp[1] + " " + temp[2] + ", " + temp[3];
+                            var formattedDate = temp[0] + ", " + temp[1] + " " + temp[2] + ", " + temp[3];
+                            header.textContent = formattedDate;
                             forecastDiv.appendChild(header);
 
                             // Create div for the day's forecasts
@@ -57,7 +63,10 @@ export function fetchForecast() {
                             <p><strong>Temperature:</strong> ${forecast.main.temp} °F</p>
                             <p><strong>Weather:</strong> ${pascalizeAndStringify(forecast.weather[0].description)}</p>
                         `;
-                        //const break = document.createElement('')
+
+                        if (alertCounter < 1) {
+                            alertCounter += emergencyAlert(forecast.weather[0].id, dateTime, locationName);
+                        }
                         currentDayForecastDiv.appendChild(forecastCard);
                     }
                 } else {
@@ -66,7 +75,7 @@ export function fetchForecast() {
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
-                //alert('Failed to fetch forecast data');
+                alert('Failed to fetch forecast data');
             });
     });
 }
