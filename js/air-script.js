@@ -21,7 +21,7 @@ function getAirQualityLevel(value, pollutant) {
         if (value <= thresholds[pollutant][i]) {
             return labels[i];
         }
-        if (i == 4 && value > thresholds[pollutant][i]){
+        if (i === 4 && value > thresholds[pollutant][i]){
             return labels[5];
         }
     }
