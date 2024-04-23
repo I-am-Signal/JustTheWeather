@@ -8,7 +8,7 @@ export function fetchWeatherMap() {
         // Set the URL of the iframe to display the weather map
         const loading = document.getElementById('map');
         loading.innerHTML = `
-            <button type="button" id="refresh">Refresh Map</button>
+            <button type="button" id="refresh" class="btn btn-primary">Refresh Map</button>
             <iframe id="weather-map" width="100%" height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
         `;
         const iframe = document.getElementById('weather-map');
