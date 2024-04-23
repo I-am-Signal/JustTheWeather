@@ -1,4 +1,4 @@
-import { OCAPIKey, OWAPIKey } from './config.js';
+import { OCAPIKey } from './config.js';
 
 /**
  * Returns the current location coordinates.
@@ -53,14 +53,6 @@ function setDefaultLocation(errorMessage, resolve = null) {
 
 
 /**
- * Clears the current saved location
- */
-export function clearSavedLocation() {
-    sessionStorage.removeItem('location');
-}
-
-
-/**
  * Takes in unformatted location string.
  * Returns locations coordinates if valid.
  * Returns null if location input is invalid.
@@ -68,29 +60,24 @@ export function clearSavedLocation() {
  * @returns 
  */
 export async function fetchDifferentLocation(location) {
-    // Remove spaces from the location string
-    const formattedLocation = location.replace(/\s+/g, '');
-    console.log("Debug: " + formattedLocation + " is formatted location.");
-    // Construct the URL for the OpenCage Geocoder API
+    const formattedLocation = location.replace(/\s+/g, ''); // remove spaces for url
+    console.log("Debug: formatted location:", formattedLocation);
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(formattedLocation)}&key=${OCAPIKey}`;
 
     try {
-        // Fetch the geocoding data from OpenCage
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
 
-        // Check if there are any results
-        if (data.results && data.results.length > 0) {
-            // Extract the latitude and longitude
+        if (data.results && data.results.length > 0) { // check if there are results
             const coords = data.results[0].geometry;
-            coords.lon = coords.lng; // Rename 'lng' to 'lon'
-            delete coords.lng; // Delete 'lng' property
+            coords.lon = coords.lng;
+            delete coords.lng; // rename and delete to format coordinate object
             console.log("Debug: " + JSON.stringify(coords) + " is the formatted coords object.");
             sessionStorage.setItem('location', JSON.stringify(coords));
-            return coords; // Return coordinates as an object
+            return coords;
         } else {
             console.error('No results found for the location:', location);
             alert('No results found for the location:', location);
