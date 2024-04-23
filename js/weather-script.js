@@ -1,11 +1,16 @@
 import { OWAPIKey } from './config.js';
-import { fetchDifferentLocation, getCurrentLocation, pascalizeAndStringify, clearSavedLocation, emergencyAlert } from './location-script.js';
+import { fetchDifferentLocation, getCurrentLocation, pascalizeAndStringify, emergencyAlert } from './location-script.js';
 
 /**
  * Fetches the current weather and displays it using OpenWeather's Current Weather API
  */
 export function fetchCurrentWeather() {
     getCurrentLocation().then(coords => {
+        if (coords == null) {
+            alert('Failed to fetch weather data due to failed coordinate retrieval.');
+            return;
+        }
+
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${coords['lat']}&lon=${coords['lon']}&appid=${OWAPIKey}&units=imperial`;
         fetch(url)
             .then(response => {
@@ -45,18 +50,17 @@ function updateCurrentWeatherDisplay(data) {
         document.getElementById('current-location').addEventListener('click', function (event) {
             event.preventDefault();
             console.log("Debug: Refresh Information button clicked!");
-            fetchWeatherByLocation(sessionStorage.getItem('location'));
+            fetchCurrentWeather();
         });
 
         document.getElementById('geo-locate').addEventListener('click', function (event) {
             event.preventDefault();
             console.log("Debug: Geolocate Location button clicked!");
-            clearSavedLocation();
+            sessionStorage.removeItem('location');
             fetchCurrentWeather();
         });
 
-        const dateTime = new Date(data.dt * 1000);
-        emergencyAlert(605, dateTime, (data.name + ", " + data.sys.country))
+        emergencyAlert(data.weather[0].id, new Date(data.dt * 1000), (data.name + ", " + data.sys.country))
 
     } else {
         weatherDiv.innerHTML = "<p>Weather data not available.</p>";
@@ -69,12 +73,11 @@ function updateCurrentWeatherDisplay(data) {
  * @param {*} location 
  */
 export function fetchWeatherByLocation(location) {
-    let coords;
     if (location) {
         try {
             coords = JSON.parse(location);
             console.log("Debug: input location as ", coords);
-            processWeatherData(coords);
+            fetchCurrentWeather();
         }
         catch {
             fetchDifferentLocation(location)
@@ -82,49 +85,16 @@ export function fetchWeatherByLocation(location) {
                     if (!data) {
                         alert('Failed to fetch weather data due to invalid location');
                     } else {
-                        coords = data;
-                        processWeatherData(coords);
+                        fetchCurrentWeather();
                     }
                 })
                 .catch(error => {
                     console.error('Error in location data retrieval:', error);
                     alert('Failed to fetch location data');
-                });
+            });
         }
     }
     else {
         alert('No location data found.');
-    }
-}
-
-
-function processWeatherData(coords) {
-    if (!coords) {
-        alert('Failed to fetch weather data due to invalid location');
-    } else {
-        console.log('Debug: coordinates are ', coords);
-        const { lat, lon } = coords;
-
-        if (lat === undefined || lon === undefined) {
-            alert('Failed to fetch weather data due to failed coordinate retrieval.');
-            return;
-        }
-
-        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OWAPIKey}&units=imperial`;
-
-        fetch(weatherUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(weatherData => {
-                updateCurrentWeatherDisplay(weatherData);
-            })
-            .catch(error => {
-                console.error('Error fetching weather data:', error);
-                alert('Failed to fetch weather data');
-            });
     }
 }
