@@ -8,38 +8,148 @@
     <title>JustTheWeather - Air Quality</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: Gainsboro;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">JustTheWeather</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="forecast.html">5-Day Forecast</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="map.html">Weather Map</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="air.html">Air Quality</a>
-                    </li>
-                </ul>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: Gainsboro;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">JustTheWeather</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="forecast.html">5-Day Forecast</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="map.html">Weather Map</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="air.html">Air Quality</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-3 text-center">
+    <h1 style="color: antiquewhite;">Air Quality</h1>
+    <!-- Info Button -->
+    <button type="button" id="infoBtn" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#infoModal">
+        What is Air Quality?
+    </button>
+</div>
+<div class="row justify-content-center mt-3">
+    <!-- Air Quality Section -->
+    <div class="col-md-5">
+        <div id="air-quality" class="air-quality-container">
+            <p>Loading...</p>
+        </div>
+        <script type="module">
+            import { fetchAirQuality } from './js/air-script.js';
+            fetchAirQuality();
+        </script>
+    </div>
+    <!-- Email Form Section -->
+    <div class="col-md-5">
+        <div class="container mt-3">
+            <h2>Receive Air Quality Alerts</h2>
+            <form id="subscribeForm" action="/subscribe" method="post">
+                <div class="mb-3">
+                    <label for="emailInput" class="form-label" style="color: white">Email address</label>
+                    <input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" required>
+                    <div id="emailHelp" class="form-text" style="color: azure">We'll never share your email with anyone else.</div>
+                </div>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Info Modal -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="infoModalLabel">Air Quality Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;">
+                <h2 style="color: #333333">What is Air Quality?</h2>
+                <p>
+                    Air quality refers to the cleanliness and purity of the air we breathe.
+                    It is a measure of the concentration of various pollutants and particles present in the atmosphere.
+                </p>
+                <h2 style="color: #333333">How is Air Quality Measured?</h2>
+                <p>
+                    Air quality is measured using a variety of instruments that detect and quantify different pollutants in the air.
+                    These pollutants include gases such as carbon monoxide (CO), nitrogen dioxide (NO2), sulfur dioxide (SO2), ozone (O3),
+                    as well as particulate matter (PM) such as PM10 and PM2.5
+                </p>
+                <h2 style="color: #333333">Air Quality Index (AQI)</h2>
+                <p>
+                    The Air Quality Index (AQI) is a standardized way of reporting air quality levels and their potential health effects.
+                    It is a numerical scale that ranges from 0 to 500, with lower values indicating better air quality and higher values indicating worse air quality.
+                    The AQI is divided into categories that correspond to different levels of health concern, ranging from "Good" to "Hazardous".
+                </p>
+                <h2 style="color: #333333">Health Effects of Poor Air Quality</h2>
+                <p>
+                    Poor air quality can have a range of negative health effects, particularly for vulnerable populations such as children, the elderly, and individuals with pre-existing health conditions.
+                    Short-term exposure to high levels of air pollution can cause respiratory symptoms such as coughing, wheezing, and shortness of breath, as well as exacerbate conditions such as asthma and bronchitis.
+                    Long-term exposure to air pollution has been linked to a variety of health problems, including heart disease, stroke, and lung cancer.
+                </p>
+                <h2 style="color: #333333">Sources of Air Pollution</h2>
+                <p>
+                    Air pollution can come from a variety of sources, including vehicle emissions, industrial processes, power plants, and wildfires.
+                    Other sources of air pollution include agricultural activities, construction sites, and household products such as paints and cleaning agents.
+                    Natural sources of air pollution, such as volcanic eruptions and dust storms, can also contribute to poor air quality.
+                </p>
+                <h2 style="color: #333333">Improving Air Quality</h2>
+                <p>
+                    There are a variety of strategies that can be employed to improve air quality, including reducing emissions from vehicles and industrial sources, transitioning to cleaner energy sources, and implementing regulations to limit pollution.
+                    Individuals can also take steps to reduce their personal contribution to air pollution by driving less, using public transportation, and conserving energy at home.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
-    </nav>
-    <h1 style="color: antiquewhite;">Air Quality</h1>
-    <div id="air-quality" class="air-quality-container">
-        <p>Loading...</p>
     </div>
-    <script type="module">
-        import { fetchAirQuality } from './js/air-script.js';
-        
-        fetchAirQuality();
-    </script>
+</div>
+
+<!-- News Section -->
+<div class="container mt-5">
+    <h2>Latest News on Air Pollution</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Study: Air Pollution Linked to Increased Risk of Dementia</h5>
+            <p class="card-text">A new study has found that exposure to air pollution is associated with an increased risk of developing dementia later in life.
+                The study, published in the journal <em>Neurology</em>, found that individuals who were exposed to higher levels of air pollution had a greater
+                risk of developing dementia compared to those who were exposed to lower levels of pollution. The findings suggest that reducing air pollution
+                may help to prevent dementia and other cognitive disorders.</p>
+            <h5 class="card-title">EPA Announces New Regulations to Reduce Air Pollution</h5>
+            <p class="card-text">The Environmental Protection Agency (EPA) has announced new regulations aimed at reducing air pollution from industrial sources.
+                The regulations, which are part of the Clean Air Act, will require industrial facilities to reduce their emissions of pollutants such as sulfur dioxide,
+                nitrogen oxides, and particulate matter. The EPA estimates that the new regulations will prevent thousands of premature deaths and reduce the
+                incidence of respiratory illnesses such as asthma and bronchitis.</p>
+            <h5 class="card-title">Air Quality Alert Issued for Major Cities</h5>
+            <p class="card-text">The National Weather Service has issued an air quality alert for several major cities due to high levels of air pollution.
+                The alert, which is in effect until midnight, advises residents to limit outdoor activities and reduce their exposure to pollution by staying indoors.
+                The alert comes as a result of high levels of ozone and particulate matter in the atmosphere, which can pose a risk to individuals with respiratory
+                conditions such as asthma and COPD.</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="./js/air-script.js"></script>
+<script>
+    // Script to handle the subscribe form submission
+    document.getElementById('subscribeForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var email = document.getElementById('emailInput').value;
+        console.log('Subscribed with email:', email);
+        alert('Subscribed successfully!');
+    });
+</script>
 </body>
 </html>

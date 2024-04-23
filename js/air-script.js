@@ -45,7 +45,7 @@ export function fetchAirQuality() {
 
                     console.log("Debug: ", data);
                     airQualityDiv.innerHTML = `
-                        <h2>Air Quality Index (AQI): ${data.list[0].main.aqi}</h2>
+                        <h2 style="color: #333333">Air Quality Index (AQI): ${data.list[0].main.aqi}</h2>
                         <p><strong>CO:</strong> ${data.list[0].components.co} µg/m³ (${getAirQualityLevel(data.list[0].components.co, 'co')})</p>
                         <p><strong>NO:</strong> ${data.list[0].components.no} µg/m³ (${getAirQualityLevel(data.list[0].components.no, 'no')})</p>
                         <p><strong>NO<sub>2</sub>:</strong> ${data.list[0].components.no2} µg/m³ (${getAirQualityLevel(data.list[0].components.no2, 'no2')})</p>
