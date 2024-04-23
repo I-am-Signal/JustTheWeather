@@ -59,9 +59,9 @@ export function fetchForecast() {
                         forecastCard.classList.add('forecast-card');
                         forecastCard.innerHTML = `
                             <img src="http://openweathermap.org/img/w/${forecast.weather[0].icon}.png" alt="Weather Icon">
-                            <p><strong>Time:</strong> ${dateTime.toLocaleTimeString()}</p>
-                            <p><strong>Temperature:</strong> ${forecast.main.temp} °F</p>
-                            <p><strong>Weather:</strong> ${pascalizeAndStringify(forecast.weather[0].description)}</p>
+                            <p style="color: white"><strong style="color: aqua">Time:</strong> ${dateTime.toLocaleTimeString()}</p>
+                            <p style="color: white"><strong style="color: aqua">Temperature:</strong> ${forecast.main.temp} °F</p>
+                            <p style="color: white"><strong style="color: aqua">Weather:</strong> ${pascalizeAndStringify(forecast.weather[0].description)}</p>
                         `;
 
                         if (alertCounter < 1) {

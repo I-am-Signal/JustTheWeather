@@ -38,8 +38,8 @@ function updateCurrentWeatherDisplay(data) {
             <p><strong>Weather:</strong> ${pascalizeAndStringify(data.weather[0].description)}</p>
             <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
             <p><strong>Wind Speed:</strong> ${data.wind.speed} mph</p>
-            <button type="button" id="current-location">Refresh Information</button>
-            <button type="button" id="geo-locate">Geolocate Location</button>
+            <button type="button" id="current-location" class="btn btn-primary">Refresh Information</button>
+            <button type="button" id="geo-locate" class="btn btn-primary">Geolocate Location</button>
         `;
 
         document.getElementById('current-location').addEventListener('click', function (event) {
