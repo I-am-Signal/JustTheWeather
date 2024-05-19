@@ -223,6 +223,8 @@ export function colorOfTheSky(time) {
     const hour = parseInt(time[0].split(":")[0]);
     const half = time[time.length - 1];
     if (half == "AM") {
+        if (hour == 12) // midnight
+            return "0a0a30";
         if (hour >= 10) // 10am to noon
             return "00bfff";
         if (hour >= 8) // 8am to 9:59am
@@ -232,6 +234,8 @@ export function colorOfTheSky(time) {
         return "0a0a30"; // midnight to 4:59am
     }
     else {
+        if (hour == 12) // noon
+            return "00aaff";
         if (hour >= 10) // 10pm to midnight
             return "0a0a30";
         if (hour >= 8) // 8pm to 9:59pm
