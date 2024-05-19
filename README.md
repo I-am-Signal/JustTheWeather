@@ -5,5 +5,6 @@ In order to use this web application, you must add your own API keys for the fol
 - OpenCage: https://opencagedata.com
 
 Input your API keys in the `config.js` file.
+Additionally, you can modify the default location that is displayed when geolocation fails in the `config.js` file.
 
 This application is currently hosted with Tiiny.Host here: https://justtheweather.tiiny.site/
