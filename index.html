@@ -1,3 +1,9 @@
+
+<!--#171717, #444444, #DA0037, #EDEDED-->
+<!--  blk      grey   nice red dark grey-->
+<!--use these as the color pallet-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,17 +39,15 @@
         </div>
     </nav>
     <div class="container">
-        <h1 style="color: antiquewhite;">Current Weather</h1>
+        <h1>Current Weather</h1>
         <div id="weather" class="weather-container">
             <p>Loading...</p>
             <!-- Weather data will be displayed here -->
         </div>
         <form id="location-form" class="location-input-container">
-            <div class="mb-3">
-                <label for="location-input" class="form-label">Enter Location:</label>
-                <input type="text" class="form-control" id="location-input" name="location">
-            </div>
-            <button type="button" class="btn btn-primary" id="manual-entry">Submit</button>
+            <label for="location-input" class="form-label">Lookup the weather for a different location:</label>
+            <input type="text" class="form-control" id="location-input" name="location">
+            <button type="button" class="button btn-primary" id="manual-entry">Submit</button>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
@@ -68,9 +72,8 @@
         function displayNewLocation() {
             const location = document.getElementById('location-input').value.trim();
             if (location) {
-                console.log("Debug: " + location + " is being searched for!");
+                console.log(location + " is being searched for.");
                 fetchWeatherByLocation(location);
-                localStorage.setItem('location', location);
             } else {
                 alert('Please enter a valid location.');
             }

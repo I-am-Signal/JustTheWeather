@@ -1,5 +1,5 @@
 import { OWAPIKey } from './config.js';
-import { fetchDifferentLocation, getCurrentLocation, pascalizeAndStringify, emergencyAlert } from './location-script.js';
+import { fetchDifferentLocation, getCurrentLocation, pascalizeAndStringify, emergencyAlert, colorOfTheSky } from './location-script.js';
 
 /**
  * Fetches the current weather and displays it using OpenWeather's Current Weather API
@@ -11,6 +11,8 @@ export function fetchCurrentWeather() {
             return;
         }
 
+
+        console.debug("Debug: coordinates: ", coords);
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${coords['lat']}&lon=${coords['lon']}&appid=${OWAPIKey}&units=imperial`;
         fetch(url)
             .then(response => {
@@ -20,8 +22,10 @@ export function fetchCurrentWeather() {
                 return response.json();
             })
             .then(data => {
+                console.debug("Debug: OpenWeather API call return:", data);
+                console.debug("Debug: come up with a better way to get the city, state location display than what currently exists. As part of this, redesign the formatLocationName method in location-script.js");
+                sessionStorage.setItem('locationName', data.name + ", " + data.sys.country);
                 updateCurrentWeatherDisplay(data);
-                sessionStorage.setItem('location', JSON.stringify(coords));
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -34,29 +38,30 @@ export function fetchCurrentWeather() {
 function updateCurrentWeatherDisplay(data) {
     const weatherDiv = document.getElementById('weather');
     if (data && data.weather && data.weather.length > 0) {
-
         weatherDiv.innerHTML = `
-            <img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="Weather Icon">
-            <p><strong>Location:</strong> ${data.name}, ${data.sys.country}</p>
+            <div type="container" class="weather-picture-container" style="background-color: #${colorOfTheSky(new Date())};">
+                <img src="https://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="Weather Icon">
+            </div>
+            <h2> ${sessionStorage.getItem('locationName')}</h2>
             <p><strong>Temperature:</strong> ${data.main.temp} °F</p>
             <p><strong>Feels Like:</strong> ${data.main.feels_like} °F</p>
             <p><strong>Weather:</strong> ${pascalizeAndStringify(data.weather[0].description)}</p>
             <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
             <p><strong>Wind Speed:</strong> ${data.wind.speed} mph</p>
-            <button type="button" id="current-location" class="btn btn-primary">Refresh Information</button>
-            <button type="button" id="geo-locate" class="btn btn-primary">Geolocate Location</button>
+            <button type="button" class="button btn-primary" id="current-location">Refresh Information</button>
+            <button type="button" class="button btn-primary" id="geo-locate">Geolocate Location</button>
         `;
 
         document.getElementById('current-location').addEventListener('click', function (event) {
             event.preventDefault();
-            console.log("Debug: Refresh Information button clicked!");
+            console.log("Refreshing current weather information for", sessionStorage.getItem('locationName'));
             fetchCurrentWeather();
         });
 
         document.getElementById('geo-locate').addEventListener('click', function (event) {
             event.preventDefault();
-            console.log("Debug: Geolocate Location button clicked!");
             sessionStorage.removeItem('location');
+            sessionStorage.removeItem('locationName');
             fetchCurrentWeather();
         });
 
@@ -69,13 +74,13 @@ function updateCurrentWeatherDisplay(data) {
 
 
 /**
- * Takes in a json format location coordinate string and displays the weather for that location
- * @param {*} location 
+ * Takes in a location string and displays the weather for that location.
+ * @param {string} location 
  */
 export function fetchWeatherByLocation(location) {
     if (location) {
         try {
-            coords = JSON.parse(location);
+            const coords = JSON.parse(location);
             console.log("Debug: input location as ", coords);
             fetchCurrentWeather();
         }
